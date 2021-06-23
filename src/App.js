@@ -4,26 +4,21 @@ import Post from './components/Post';
 import AllPosts from './pages/AllPosts';
 import Form from './pages/Form';
 import SinglePost from './pages/SinglePost]';
-
+import { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 function App() {
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
-        </div>
-    );
+    //* Style Objects
+
+    const H1 = styled.h1`
+        text-align: center;
+        margin: 10px;
+    `;
+
+    const url = 'https://todos-rails-backend.herokuapp.com/todos/';
+    const [posts, setPosts] = useState([]);
+
+    return <div className="App"></div>;
 }
 
 export default App;
