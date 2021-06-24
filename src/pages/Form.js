@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Form = ({ initialTodo, history, handleSubmit, buttonLabel }) => {
     const [formData, setFormData] = useState(initialTodo);
@@ -12,6 +12,15 @@ const Form = ({ initialTodo, history, handleSubmit, buttonLabel }) => {
         handleSubmit(formData);
         history.push('/');
     };
+
+    useEffect(() => {
+        if (history.location.pathname === '/new') {
+            setFormData({
+                subject: '',
+                details: '',
+            });
+        }
+    }, [history.location.pathname]);
 
     return (
         <form onSubmit={(event) => handleSubmission(event)}>
@@ -29,7 +38,7 @@ const Form = ({ initialTodo, history, handleSubmit, buttonLabel }) => {
                 placeholder="details"
                 onChange={(event) => handleChange(event)}
             />
-            <button type="submit"></button>
+            <button type="submit">{buttonLabel}</button>
         </form>
     );
 };

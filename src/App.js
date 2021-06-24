@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import Post from './components/Post';
 import AllPosts from './pages/AllPosts';
 import Form from './pages/Form';
 import SinglePost from './pages/SinglePost';
@@ -19,14 +17,14 @@ const Button = styled.button`
     margin: auto;
 `;
 
-function App() {
+function App(props) {
     const url = 'https://todos-rails-backend.herokuapp.com/todos/';
-    const [posts, setPosts] = useState([]);
-
     const nullTodo = {
         subject: '',
         details: '',
     };
+    const [posts, setPosts] = useState([]);
+    const [targetTodo, setTargetTodo] = useState(nullTodo);
 
     const getTodos = async () => {
         const response = await fetch(url);
@@ -41,6 +39,29 @@ function App() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(newTodo),
+        });
+        getTodos();
+    };
+
+    const getTargetTodo = (todo) => {
+        setTargetTodo(todo);
+        props.history.push('/edit');
+    };
+
+    const updateTodo = async (todo) => {
+        await fetch(url + todo.id, {
+            method: 'put',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(todo),
+        });
+        getTodos();
+    };
+
+    const deleteTodo = async (todo) => {
+        const response = await fetch(url + todo.id + '/', {
+            method: 'delete',
         });
         getTodos();
     };
@@ -63,7 +84,14 @@ function App() {
                 />
                 <Route
                     path="/post/:id"
-                    render={(rp) => <SinglePost posts={posts} {...rp} />}
+                    render={(rp) => (
+                        <SinglePost
+                            edit={getTargetTodo}
+                            posts={posts}
+                            deleteTodo={deleteTodo}
+                            {...rp}
+                        />
+                    )}
                 />
                 <Route
                     path="/new"
@@ -78,7 +106,15 @@ function App() {
                 />
                 <Route
                     path="/edit"
-                    render={(rp) => <Form posts={posts} {...rp} />}
+                    render={(rp) => (
+                        <Form
+                            posts={posts}
+                            {...rp}
+                            initialTodo={targetTodo}
+                            handleSubmit={updateTodo}
+                            buttonLabel="update todo"
+                        />
+                    )}
                 />
             </Switch>
         </div>
