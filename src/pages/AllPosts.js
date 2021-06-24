@@ -8,7 +8,7 @@ const AllPosts = (props) => {
             return <Post post={post} key={post.id} />;
         });
     };
-    // return props.posts ? loaded() : loading();
-    return loaded();
+    return props.posts ? loaded() : loading();
+    // return loaded();
 };
 export default AllPosts;
